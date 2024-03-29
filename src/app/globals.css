@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Inria";
+  src: url("../../public/fonts/InriaSerif-Regular.ttf");
+}
+
+@font-face {
+  font-family: "InriaBold";
+  src: url("../../public/fonts/InriaSerif-Bold.ttf");
+}
+
+@font-face {
+  font-family: "SourceSerif";
+  src: url("../../public/fonts/SourceSerif4-Regular.ttf");
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
