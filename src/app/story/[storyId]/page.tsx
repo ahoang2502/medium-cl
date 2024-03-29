@@ -1,7 +1,13 @@
 import React from "react";
 
-const StoryIdPage = () => {
-  return <div>StoryIdPage</div>;
+import { NewStory } from "./NewStory";
+
+const StoryIdPage = ({ params }: { params: { storyId: string } }) => {
+  return (
+    <div className="max-w-[680px] mx-auto mt-10">
+      <NewStory />
+    </div>
+  );
 };
 
 export default StoryIdPage;

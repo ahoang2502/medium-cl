@@ -22,8 +22,10 @@ const config = {
         inria: ["Inria"],
         inriaBold: ["InriaBold"],
         sourceSerif: ["SourceSerif"],
+        roboto: ["Roboto"],
       },
       colors: {
+        ink: "#242424",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -79,7 +81,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
 
 export default config;

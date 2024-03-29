@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider>
         <body className={inter.className}>
+          <Navbar />
           {children}
           <Toaster richColors />
         </body>

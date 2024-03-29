@@ -1,0 +1,9 @@
+h3:empty:not(:focus):before {
+  content: attr(data-h3-placeholder);
+  opacity: 30%;
+}
+
+p:empty:not(:focus):before {
+  content: attr(data-p-placeholder);
+  opacity: 30%;
+}
