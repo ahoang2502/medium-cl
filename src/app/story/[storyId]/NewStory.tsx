@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
+import MediumEditor from "medium-editor";
+import "medium-editor/dist/css/medium-editor.css";
+import "medium-editor/dist/css/themes/default.css";
 
 import { cn } from "@/lib/utils";
 import "./_components/NewStory.css";
@@ -31,7 +34,7 @@ export const NewStory = () => {
         const rect = range.getClientRects()[0];
         if (rect) {
           x = rect.left;
-          y = rect.top + window.scrollY - 110;
+          y = rect.top + window.scrollY - 115;
         }
       }
     }
@@ -47,6 +50,31 @@ export const NewStory = () => {
     };
 
     contentEditableRef.current?.addEventListener("input", handleInput);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window.document !== "undefined") {
+      const editor = new MediumEditor(".editable", {
+        elementsContainer: document.getElementById("container") as HTMLElement,
+        toolbar: {
+          buttons: [
+            "bold",
+            "italic",
+            "underline",
+            "anchor",
+            "h1",
+            "h2",
+            "h3",
+            "quote",
+          ],
+        },
+        placeholder: { text: "" },
+      });
+
+      return () => {
+        editor.destroy();
+      };
+    }
   }, []);
 
   return (
