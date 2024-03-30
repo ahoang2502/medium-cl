@@ -4,15 +4,15 @@ import MediumEditor from "medium-editor";
 import "medium-editor/dist/css/medium-editor.css";
 import "medium-editor/dist/css/themes/default.css";
 import { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
 import { BsPlusLg } from "react-icons/bs";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
-import Image from "next/image";
-import { createRoot } from "react-dom/client";
 
 import { cn } from "@/lib/utils";
+import { ImageComp } from "./ImageComp";
 import "./_components/NewStory.css";
-import { imageUpload } from "@/actions/cloudinary";
+import { Divider } from "./Divider";
 
 export const NewStory = () => {
   const [openTools, setOpenTools] = useState<boolean>(false);
@@ -66,9 +66,20 @@ export const NewStory = () => {
       const root = createRoot(wrapperDiv);
 
       root.render(ImageComponent);
-
       contentEditableRef.current?.appendChild(wrapperDiv);
     }
+  };
+
+  const insertDivider = () => {
+    const DividerComponent = <Divider />;
+
+    setOpenTools(false);
+
+    const wrapperDiv = document.createElement("div");
+    const root = createRoot(wrapperDiv);
+
+    root.render(DividerComponent);
+    contentEditableRef.current?.appendChild(wrapperDiv);
   };
 
   useEffect(() => {
@@ -174,6 +185,7 @@ export const NewStory = () => {
               "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-75 bg-white cursor-pointer",
               openTools ? "scale-100 visible" : "scale-0 invisible"
             )}
+            onClick={insertDivider}
           >
             <RiMoreFill className="text-green-700/80" />
           </span>
@@ -189,47 +201,5 @@ export const NewStory = () => {
         </div>
       </div>
     </main>
-  );
-};
-
-const ImageComp = ({ imageUrl, file }: { imageUrl: string; file: File }) => {
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>(imageUrl);
-
-  const updateImageUrl = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      imageUpload(formData).then((secureImageUrl) =>
-        setCurrentImageUrl(secureImageUrl)
-      );
-    } catch (error) {
-      console.log("🔴 [UPLOAD_IMAGE] ", error);
-    }
-  };
-
-  useEffect(() => {
-    updateImageUrl();
-  }, [imageUrl]);
-
-  return (
-    <div className="py-3 ">
-      <div className="">
-        <img
-          src={currentImageUrl}
-          alt="image"
-          className="max-w-full h-[450px]"
-        />
-
-        <div className="text-center text-sm max-w-md mx-auto">
-          <p
-            className=""
-            data-p-placeholder="What's the caption for your image? "
-          ></p>
-        </div>
-      </div>
-
-      <p className="" data-p-placeholder="..."></p>
-    </div>
   );
 };
