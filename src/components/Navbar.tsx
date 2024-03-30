@@ -86,7 +86,7 @@ export const Navbar = () => {
           </p>
 
           <span
-            className="absolute top-0 right-0 translate-y-1/2 cursor-pointer"
+            className="absolute top-0 right-4 translate-y-1/2 cursor-pointer text-zinc-500 hover:text-zinc-900 transition"
             onClick={() => setIsBannerOpen(false)}
           >
             <VscClose size={20} />

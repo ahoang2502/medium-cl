@@ -1,15 +1,18 @@
 "use client";
 
+import MediumEditor from "medium-editor";
+import "medium-editor/dist/css/medium-editor.css";
+import "medium-editor/dist/css/themes/default.css";
 import { useEffect, useRef, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
-import MediumEditor from "medium-editor";
-import "medium-editor/dist/css/medium-editor.css";
-import "medium-editor/dist/css/themes/default.css";
+import Image from "next/image";
+import { createRoot } from "react-dom/client";
 
 import { cn } from "@/lib/utils";
 import "./_components/NewStory.css";
+import { imageUpload } from "@/actions/cloudinary";
 
 export const NewStory = () => {
   const [openTools, setOpenTools] = useState<boolean>(false);
@@ -19,6 +22,7 @@ export const NewStory = () => {
   }>({ top: 0, left: 0 });
 
   const contentEditableRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const getCaretPosition = () => {
     let x = 0;
@@ -33,13 +37,38 @@ export const NewStory = () => {
 
         const rect = range.getClientRects()[0];
         if (rect) {
-          x = rect.left;
+          x = rect.left + window.screenX;
           y = rect.top + window.scrollY - 115;
         }
       }
     }
 
     return { x, y };
+  };
+
+  const insertImageComp = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setOpenTools(false);
+
+      const localImageUrl = URL.createObjectURL(file);
+
+      const ImageComponent = <ImageComp imageUrl={localImageUrl} file={file} />;
+
+      const wrapperDiv = document.createElement("div");
+      const root = createRoot(wrapperDiv);
+
+      root.render(ImageComponent);
+
+      contentEditableRef.current?.appendChild(wrapperDiv);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +82,7 @@ export const NewStory = () => {
   }, []);
 
   useEffect(() => {
-    if (typeof window.document !== "undefined") {
+    if (typeof window?.document !== "undefined") {
       const editor = new MediumEditor(".editable", {
         elementsContainer: document.getElementById("container") as HTMLElement,
         toolbar: {
@@ -124,18 +153,25 @@ export const NewStory = () => {
         >
           <span
             className={cn(
-              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 bg-white",
+              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 bg-white cursor-pointer",
               openTools ? "scale-100 visible" : "scale-0 invisible"
             )}
+            onClick={insertImageComp}
           >
             <IoImageOutline className="text-green-700/80" />
 
-            <input type="file" accept="image/*" style={{ display: "none" }} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileInputChange}
+            />
           </span>
 
           <span
             className={cn(
-              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-75 bg-white",
+              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-75 bg-white cursor-pointer",
               openTools ? "scale-100 visible" : "scale-0 invisible"
             )}
           >
@@ -144,7 +180,7 @@ export const NewStory = () => {
 
           <span
             className={cn(
-              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-100 bg-white",
+              "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-100 bg-white cursor-pointer",
               openTools ? "scale-100 visible" : "scale-0 invisible"
             )}
           >
@@ -153,5 +189,47 @@ export const NewStory = () => {
         </div>
       </div>
     </main>
+  );
+};
+
+const ImageComp = ({ imageUrl, file }: { imageUrl: string; file: File }) => {
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>(imageUrl);
+
+  const updateImageUrl = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      imageUpload(formData).then((secureImageUrl) =>
+        setCurrentImageUrl(secureImageUrl)
+      );
+    } catch (error) {
+      console.log("🔴 [UPLOAD_IMAGE] ", error);
+    }
+  };
+
+  useEffect(() => {
+    updateImageUrl();
+  }, [imageUrl]);
+
+  return (
+    <div className="py-3 ">
+      <div className="">
+        <img
+          src={currentImageUrl}
+          alt="image"
+          className="max-w-full h-[450px]"
+        />
+
+        <div className="text-center text-sm max-w-md mx-auto">
+          <p
+            className=""
+            data-p-placeholder="What's the caption for your image? "
+          ></p>
+        </div>
+      </div>
+
+      <p className="" data-p-placeholder="..."></p>
+    </div>
   );
 };
