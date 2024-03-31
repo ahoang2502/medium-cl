@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
 import { imageUpload } from "@/actions/cloudinary";
-import './_components/NewStory.css'
+import "./_components/NewStory.css";
 
-export const ImageComp = ({
-  imageUrl,
-  file,
-}: {
+type Props = {
   imageUrl: string;
   file: File;
-}) => {
+  handleSave: () => void;
+};
+
+export const ImageComp = ({ imageUrl, file, handleSave }: Props) => {
   const [currentImageUrl, setCurrentImageUrl] = useState<string>(imageUrl);
 
   const updateImageUrl = async () => {
@@ -26,7 +26,9 @@ export const ImageComp = ({
   };
 
   useEffect(() => {
-    updateImageUrl();
+    updateImageUrl().then(() => {
+      handleSave();
+    });
   }, [imageUrl]);
 
   return (

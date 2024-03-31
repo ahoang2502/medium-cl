@@ -69,7 +69,13 @@ export const NewStory = ({ storyId }: Props) => {
 
       const localImageUrl = URL.createObjectURL(file);
 
-      const ImageComponent = <ImageComp imageUrl={localImageUrl} file={file} />;
+      const ImageComponent = (
+        <ImageComp
+          imageUrl={localImageUrl}
+          file={file}
+          handleSave={handleSave}
+        />
+      );
 
       const wrapperDiv = document.createElement("div");
       const root = createRoot(wrapperDiv);
@@ -89,6 +95,8 @@ export const NewStory = ({ storyId }: Props) => {
 
     root.render(DividerComponent);
     contentEditableRef.current?.appendChild(wrapperDiv);
+
+    handleSave();
   };
 
   const insertCode = () => {
