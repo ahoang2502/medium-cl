@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import MediumEditor from "medium-editor";
 import "medium-editor/dist/css/medium-editor.css";
 import "medium-editor/dist/css/themes/default.css";
@@ -9,18 +10,25 @@ import { BsPlusLg } from "react-icons/bs";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
 
-import { cn } from "@/lib/utils";
-import { ImageComp } from "./ImageComp";
-import { Divider } from "./Divider";
-import "./_components/NewStory.css";
+import { cn, debounce } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
 import { CodeBlock } from "./CodeBlock";
+import { Divider } from "./Divider";
+import { ImageComp } from "./ImageComp";
+import "./_components/NewStory.css";
 
-export const NewStory = () => {
+type Props = {
+  storyId: string;
+};
+
+export const NewStory = ({ storyId }: Props) => {
   const [openTools, setOpenTools] = useState<boolean>(false);
   const [buttonPosition, setButtonPosition] = useState<{
     top: number;
     left: number;
   }>({ top: 0, left: 0 });
+  const [saving, setSaving] = useState<boolean>(false);
+  const { user } = useUser();
 
   const contentEditableRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -95,11 +103,34 @@ export const NewStory = () => {
     contentEditableRef.current?.appendChild(wrapperDiv);
   };
 
+  const debouncedHandleSave = useRef(
+    debounce(() => {
+      handleSave();
+    }, 1000)
+  ).current;
+
+  const handleSave = async () => {
+    const content = contentEditableRef.current?.innerHTML;
+
+    setSaving(true);
+    try {
+      await axios.patch("/api/new-story", {
+        storyId,
+        content,
+      });
+    } catch (error) {
+      console.log("🔴 [handle_save_story] ", error);
+    }
+
+    setSaving(false);
+  };
+
   useEffect(() => {
     const handleInput = () => {
       const { x, y } = getCaretPosition();
 
       setButtonPosition({ top: y, left: -50 });
+      debouncedHandleSave();
     };
 
     contentEditableRef.current?.addEventListener("input", handleInput);
@@ -132,6 +163,11 @@ export const NewStory = () => {
 
   return (
     <main id="container" className="max-w-[800px] mx-auto relative mt-8">
+      <p className="fixed top-5 left-20 font-sans text-sm">
+        <span className="text-zinc-600 mr-3">Draft in {user?.firstName}</span>
+        <span className="opacity-50">{saving ? "Saving..." : "Saved"}</span>
+      </p>
+
       <div
         id="editable"
         contentEditable
