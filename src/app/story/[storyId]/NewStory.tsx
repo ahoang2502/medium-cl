@@ -11,8 +11,9 @@ import { RiMoreFill } from "react-icons/ri";
 
 import { cn } from "@/lib/utils";
 import { ImageComp } from "./ImageComp";
-import "./_components/NewStory.css";
 import { Divider } from "./Divider";
+import "./_components/NewStory.css";
+import { CodeBlock } from "./CodeBlock";
 
 export const NewStory = () => {
   const [openTools, setOpenTools] = useState<boolean>(false);
@@ -79,6 +80,18 @@ export const NewStory = () => {
     const root = createRoot(wrapperDiv);
 
     root.render(DividerComponent);
+    contentEditableRef.current?.appendChild(wrapperDiv);
+  };
+
+  const insertCode = () => {
+    const CodeComponent = <CodeBlock />;
+
+    setOpenTools(false);
+
+    const wrapperDiv = document.createElement("div");
+    const root = createRoot(wrapperDiv);
+
+    root.render(CodeComponent);
     contentEditableRef.current?.appendChild(wrapperDiv);
   };
 
@@ -195,6 +208,7 @@ export const NewStory = () => {
               "border-[1px] border-green-700 rounded-full block p-[6px] ease-linear duration-100 delay-100 bg-white cursor-pointer",
               openTools ? "scale-100 visible" : "scale-0 invisible"
             )}
+            onClick={insertCode}
           >
             <IoCodeOutline className="text-green-700/80" />
           </span>
