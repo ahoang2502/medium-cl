@@ -173,7 +173,7 @@ export const NewStory = ({ storyId, storyContent }: Props) => {
   }, []);
 
   return (
-    <main id="container" className="max-w-[800px] mx-auto relative">
+    <main id="container" className="max-w-[800px] mx-auto relative prose">
       <p className="fixed top-5 left-20 font-sans text-sm">
         <span className="text-zinc-600 mr-3">Draft in {user?.firstName}</span>
         <span className="opacity-50">{saving ? "Saving..." : "Saved"}</span>
@@ -200,7 +200,7 @@ export const NewStory = ({ storyId, storyContent }: Props) => {
             ></h3>
 
             <p
-              className="text-base mt-5"
+              className="text-base"
               data-p-placeholder="Tell your story..."
             ></p>
           </div>
