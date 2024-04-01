@@ -17,7 +17,7 @@ export const ImageComp = ({ imageUrl, file, handleSave }: Props) => {
       const formData = new FormData();
       formData.append("file", file);
 
-      imageUpload(formData).then((secureImageUrl) =>
+      await imageUpload(formData).then((secureImageUrl) =>
         setCurrentImageUrl(secureImageUrl)
       );
     } catch (error) {

@@ -7,6 +7,7 @@ import "medium-editor/dist/css/themes/default.css";
 import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BsPlusLg } from "react-icons/bs";
+import { Story } from "@prisma/client";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
 
@@ -16,12 +17,14 @@ import { CodeBlock } from "./CodeBlock";
 import { Divider } from "./Divider";
 import { ImageComp } from "./ImageComp";
 import "./_components/NewStory.css";
+import { getStoryById } from "@/actions/getStories";
 
 type Props = {
   storyId: string;
+  storyContent: string | null | undefined;
 };
 
-export const NewStory = ({ storyId }: Props) => {
+export const NewStory = ({ storyId, storyContent }: Props) => {
   const [openTools, setOpenTools] = useState<boolean>(false);
   const [buttonPosition, setButtonPosition] = useState<{
     top: number;
@@ -73,7 +76,7 @@ export const NewStory = ({ storyId }: Props) => {
         <ImageComp
           imageUrl={localImageUrl}
           file={file}
-          handleSave={handleSave}
+          handleSave={debouncedHandleSave}
         />
       );
 
@@ -170,7 +173,7 @@ export const NewStory = ({ storyId }: Props) => {
   }, []);
 
   return (
-    <main id="container" className="max-w-[800px] mx-auto relative mt-8">
+    <main id="container" className="max-w-[800px] mx-auto relative">
       <p className="fixed top-5 left-20 font-sans text-sm">
         <span className="text-zinc-600 mr-3">Draft in {user?.firstName}</span>
         <span className="opacity-50">{saving ? "Saving..." : "Saved"}</span>
@@ -181,20 +184,32 @@ export const NewStory = ({ storyId }: Props) => {
         contentEditable
         suppressContentEditableWarning
         ref={contentEditableRef}
-        className="editable font-inria outline-none focus:outline-none max-w-[800px] prose"
+        className="editable font-inria outline-none focus:outline-none max-w-[800px]"
         style={{ whiteSpace: "pre-line" }}
       >
-        <h3
-          className="font-inriaBold text-5xl"
-          data-h3-placeholder="Title"
-        ></h3>
+        {storyContent ? (
+          <div
+            className=""
+            dangerouslySetInnerHTML={{ __html: storyContent }}
+          />
+        ) : (
+          <div style={{ whiteSpace: "pre-line" }}>
+            <h3
+              className="font-inriaBold text-5xl"
+              data-h3-placeholder="Title"
+            ></h3>
 
-        <p className="text-xl mt-4" data-p-placeholder="Tell your story..."></p>
+            <p
+              className="text-base mt-5"
+              data-p-placeholder="Tell your story..."
+            ></p>
+          </div>
+        )}
       </div>
 
       {/* Tools */}
       <div
-        className={cn("z-10", buttonPosition.top === 0 ? "hidden" : "")}
+        className={cn("z-10 mt-5", buttonPosition.top === 0 ? "hidden" : "")}
         style={{
           position: "absolute",
           top: buttonPosition.top,

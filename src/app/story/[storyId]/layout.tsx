@@ -3,10 +3,10 @@ import { NewStoryNavbar } from "./NewStoryNavbar";
 
 const NewStoryLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <>
       <NewStoryNavbar />
       {children}
-    </div>
+    </>
   );
 };
 
