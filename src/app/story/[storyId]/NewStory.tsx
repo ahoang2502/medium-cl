@@ -103,7 +103,7 @@ export const NewStory = ({ storyId, storyContent }: Props) => {
   };
 
   const insertCode = () => {
-    const CodeComponent = <CodeBlock />;
+    const CodeComponent = <CodeBlock handleSave={debouncedHandleSave} />;
 
     setOpenTools(false);
 
