@@ -7,17 +7,15 @@ import "medium-editor/dist/css/themes/default.css";
 import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BsPlusLg } from "react-icons/bs";
-import { Story } from "@prisma/client";
 import { IoCodeOutline, IoImageOutline } from "react-icons/io5";
 import { RiMoreFill } from "react-icons/ri";
 
 import { cn, debounce } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { CodeBlock } from "./CodeBlock";
-import { Divider } from "./Divider";
-import { ImageComp } from "./ImageComp";
-import "./_components/NewStory.css";
-import { getStoryById } from "@/actions/getStories";
+import { CodeBlock } from "./_components/CodeBlock";
+import { Divider } from "./_components/Divider";
+import { ImageComp } from "./_components/ImageComp";
+import "./_components/styles/NewStory.css";
 
 type Props = {
   storyId: string;
@@ -173,8 +171,8 @@ export const NewStory = ({ storyId, storyContent }: Props) => {
   }, []);
 
   return (
-    <main id="container" className="max-w-[800px] mx-auto relative prose">
-      <p className="fixed top-5 left-20 font-sans text-sm">
+    <main id="container" className="max-w-[800px] mx-auto relative prose mt-20">
+      <p className="fixed top-5 left-20 font-sans text-sm z-[19]">
         <span className="text-zinc-600 mr-3">Draft in {user?.firstName}</span>
         <span className="opacity-50">{saving ? "Saving..." : "Saved"}</span>
       </p>
@@ -194,10 +192,10 @@ export const NewStory = ({ storyId, storyContent }: Props) => {
           />
         ) : (
           <div style={{ whiteSpace: "pre-line" }}>
-            <h3
+            <h1
               className="font-inriaBold text-5xl"
-              data-h3-placeholder="Title"
-            ></h3>
+              data-h1-placeholder="Title"
+            ></h1>
 
             <p
               className="text-base"

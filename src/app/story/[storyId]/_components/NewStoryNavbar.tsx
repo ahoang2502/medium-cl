@@ -2,34 +2,45 @@
 
 import { UserButton } from "@clerk/nextjs";
 import axios from "axios";
-import { Loader2, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { PiBellThin } from "react-icons/pi";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { VscClose } from "react-icons/vsc";
-
+import { toast } from "sonner";
 import { useState } from "react";
 
-export const NewStoryNavbar = () => {
+import { SaveStoryPopup } from "./SaveStoryPopup";
+
+type Props = {
+  storyId: string;
+  currentUserId: string;
+  currentUserFirstName: string | null;
+  currentUserLastName: string | null;
+};
+
+export const NewStoryNavbar = ({
+  storyId,
+  currentUserFirstName,
+  currentUserId,
+  currentUserLastName,
+}: Props) => {
   const router = useRouter();
-  const [storyCreateLoading, setStoryCreateLoading] = useState(false);
   const [isBannerOpen, setIsBannerOpen] = useState(true);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
-  const createNewStory = async () => {
+  const publishStory = async (topics: string[]) => {
     try {
-      setStoryCreateLoading(true);
-      const response = await axios.post("/api/new-story");
+      const response = await axios.patch("/api/publish-new-story", {
+        storyId,
+        topics,
+      });
 
-      toast.success("Story created successfully!");
-      router.push(`/story/${response.data.id}`);
+      toast.success("Story published successfully!");
+      router.push(`/published/${response.data.id}`);
     } catch (error) {
-      console.log("🔴 [CREATE_NEW_STORY] ", error);
+      console.log("🔴 [publish_story] ", error);
 
-      toast.error("Couldn't create story. Please try again");
-    } finally {
-      setStoryCreateLoading(false);
+      toast.error("Error publishing this story. Please try again.");
     }
   };
 
@@ -49,13 +60,27 @@ export const NewStoryNavbar = () => {
           </div>
 
           <div className="flex items-center space-x-7">
-            <button className="bg-[#0f730c] text-white font-sans text-sm rounded-full px-3 py-1 hover:opacity-90 duration-100 ease-in">
+            <button
+              className="bg-[#0f730c] text-white font-sans text-sm rounded-full px-3 py-1 hover:opacity-90 duration-100 ease-in"
+              onClick={() => setShowPopup(!showPopup)}
+            >
               Publish
             </button>
 
             <UserButton signInUrl="/" />
           </div>
         </div>
+
+        {showPopup && (
+          <SaveStoryPopup
+            setShowPopup={setShowPopup}
+            storyId={storyId}
+            publishStory={publishStory}
+            currentUserFirstName={currentUserFirstName}
+            currentUserId={currentUserId}
+            currentUserLastName={currentUserLastName}
+          />
+        )}
       </nav>
 
       {isBannerOpen && (

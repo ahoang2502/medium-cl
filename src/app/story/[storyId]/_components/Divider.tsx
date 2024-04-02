@@ -1,7 +1,7 @@
 import React from "react";
 import { RiMoreFill } from "react-icons/ri";
 
-import "./_components/NewStory.css";
+import "./styles/NewStory.css";
 
 export const Divider = () => {
   return (

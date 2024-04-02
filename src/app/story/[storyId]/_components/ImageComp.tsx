@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { imageUpload } from "@/actions/cloudinary";
-import "./_components/NewStory.css";
+import "./styles/NewStory.css";
 
 type Props = {
   imageUrl: string;

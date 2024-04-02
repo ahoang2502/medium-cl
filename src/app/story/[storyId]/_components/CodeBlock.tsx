@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import "./_components/NewStory.css";
+import "./styles/NewStory.css";
 
 type Props = {
   handleSave: () => void;
