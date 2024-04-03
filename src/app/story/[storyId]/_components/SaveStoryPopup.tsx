@@ -74,7 +74,7 @@ export const SaveStoryPopup = ({
   );
   const textWithoutHtml = stripHtmlTags(contentWithoutH1);
   const first10Words = textWithoutHtml.split(/\s+/).slice(0, 10).join(" ");
-  const h1elemntwithouttag = stripHtmlTags(h1Element);
+  const h1ElementWithoutTag = stripHtmlTags(h1Element);
 
   return (
     <div className="fixed bg-gray-50 w-full z-20 overflow-auto top-0 left-0 right-0 bottom-0 px-1">
@@ -106,7 +106,7 @@ export const SaveStoryPopup = ({
           </div>
 
           <h1 className="border-b-[1px] text-[18px] font-semibold py-2">
-            {h1elemntwithouttag}
+            {h1ElementWithoutTag}
           </h1>
 
           <p className="border-b-[1px] py-2 text-sm text-neutral-500 pt-3">

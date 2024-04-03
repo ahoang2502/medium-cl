@@ -16,3 +16,11 @@ export const getCurrentUser = async () => {
 
   return user;
 };
+
+export const getUser = async (userId: string) => {
+  if (!userId) throw new Error("Invalid user ID");
+
+  const user = await clerkClient.users.getUser(userId);
+
+  return user;
+};
