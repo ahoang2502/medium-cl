@@ -25,12 +25,13 @@ model Story {
 model Clap {
   id     String @id @default(dbgenerated("concat('clap_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
   userId String
+  clapCount   Int @default(0)
 
   storyId String
   story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
 
-  commentId String
-  Comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?
+  Comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 model Comment {

@@ -1,11 +1,13 @@
+import { RiMoreFill } from "react-icons/ri";
 import { Story } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
+
 import { ClapComponent } from "./ClapComponent";
 import { CommentComponent } from "./CommentComponent";
 import { SaveComponent } from "./SaveComponent";
 import { ShareComponent } from "./ShareComponent";
-import { RiMoreFill } from "react-icons/ri";
+import { clapCountByUser, getClapCount } from "@/actions/clap";
 
 type Props = {
   authorFirstName: string | null;
@@ -14,7 +16,7 @@ type Props = {
   publishedStory: Story;
 };
 
-export const StoryDetails = ({
+export const StoryDetails = async ({
   authorFirstName,
   authorImage,
   authorLastName,
@@ -26,6 +28,9 @@ export const StoryDetails = ({
     return htmlString.replace(/<[^>]*>/g, "");
   };
   const h1ElementWithoutTag = stripHtmlTags(h1Element);
+
+  const clapCount = await getClapCount(publishedStory.id);
+  const userClaps = await clapCountByUser(publishedStory.id);
 
   return (
     <div className="flex items-center justify-center mt-6 max-w-[800px] mx-auto">
@@ -62,7 +67,12 @@ export const StoryDetails = ({
 
         <div className="border-y-[1px] border-neutral-200 py-3 mt-6 flex items-center justify-center px-3">
           <div className="flex items-center space-x-4 ">
-            <ClapComponent />
+            <ClapComponent
+              storyId={publishedStory.id}
+              clapCount={clapCount}
+              userClaps={userClaps}
+            />
+
             <CommentComponent />
           </div>
 
