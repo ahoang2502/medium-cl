@@ -9,6 +9,7 @@ import { SaveComponent } from "./SaveComponent";
 import { ShareComponent } from "./ShareComponent";
 import { clapCountByUser, getClapCount } from "@/actions/clap";
 import { getCurrentUser } from "@/actions/user";
+import { numberOfComments } from "@/actions/comments";
 
 type Props = {
   authorFirstName: string | null;
@@ -34,6 +35,8 @@ export const StoryDetails = async ({
   const userClaps = await clapCountByUser(publishedStory.id);
 
   const currentUser = await getCurrentUser();
+
+  const NumberOfComments = await numberOfComments(publishedStory.id);
 
   return (
     <div className="flex items-center justify-center mt-6 max-w-[800px] mx-auto">
@@ -80,6 +83,9 @@ export const StoryDetails = async ({
               authorFirstName={currentUser.firstName}
               authorImage={currentUser.imageUrl}
               authorLastName={currentUser.lastName}
+              numberOfComments={
+                NumberOfComments.response ? NumberOfComments.response : 0
+              }
             />
           </div>
 

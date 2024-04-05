@@ -42,3 +42,20 @@ export const getAllComments = async (
     return { error: "Error getting story comments" };
   }
 };
+
+export const numberOfComments = async (storyId: string) => {
+  try {
+    const commentsNo = await db.comment.aggregate({
+      where: {
+        storyId,
+      },
+      _count: true,
+    });
+
+    return { response: commentsNo._count || 0 };
+  } catch (error) {
+    console.log("Error getting number of comments: ", error);
+
+    return { error: "Error getting number of comments" };
+  }
+};

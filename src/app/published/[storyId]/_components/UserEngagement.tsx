@@ -75,7 +75,11 @@ export const UserEngagement = ({ storyId, comment, totalClaps }: Props) => {
         />
       )}
 
-      {showCommentArea && <CommentArea commentId={comment.id} />}
+      {showCommentArea && (
+        <div className="border-l-[3px] ml-5">
+          <CommentArea commentId={comment.id} />
+        </div>
+      )}
     </div>
   );
 };

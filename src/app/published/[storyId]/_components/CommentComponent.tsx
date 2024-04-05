@@ -9,18 +9,20 @@ import { toast } from "sonner";
 import { BubbleChat } from "@/components/icons/BubbleChat";
 import { cn } from "@/lib/utils";
 import { IPreviousComments, PreviousComments } from "./PreviousComments";
-import { getAllComments } from "@/actions/comments";
+import { getAllComments, numberOfComments } from "@/actions/comments";
 
 type Props = {
   authorImage: string;
   authorFirstName: string | null;
   authorLastName: string | null;
+  numberOfComments: number | null;
 };
 
 export const CommentComponent = ({
   authorFirstName,
   authorImage,
   authorLastName,
+  numberOfComments,
 }: Props) => {
   const [showSideComp, setShowSideComp] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
@@ -71,7 +73,7 @@ export const CommentComponent = ({
       >
         <BubbleChat />
 
-        <p className="text-sm">{comments.length}</p>
+        <p className="text-sm">{numberOfComments}</p>
       </button>
 
       {/* Comment Sidebar */}
