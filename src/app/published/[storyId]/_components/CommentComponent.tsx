@@ -2,12 +2,14 @@
 
 import axios from "axios";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 import { BubbleChat } from "@/components/icons/BubbleChat";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { IPreviousComments, PreviousComments } from "./PreviousComments";
+import { getAllComments } from "@/actions/comments";
 
 type Props = {
   authorImage: string;
@@ -22,6 +24,7 @@ export const CommentComponent = ({
 }: Props) => {
   const [showSideComp, setShowSideComp] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
+  const [comments, setComments] = useState<IPreviousComments[]>([]);
 
   const pathname = usePathname();
   const storyId = pathname.split("/")?.[2] as string;
@@ -40,6 +43,26 @@ export const CommentComponent = ({
     }
   };
 
+  useEffect(() => {
+    const fetchPreviousComments = async () => {
+      try {
+        const result = await getAllComments(storyId);
+
+        if (result && result.response) {
+          setComments(result.response);
+        } else {
+          console.log(result.error);
+          toast.error("Error fetching previous comments");
+        }
+      } catch (error) {
+        console.log("🔴 Error fetching comments ", error);
+        toast.error("Error fetching previous comments");
+      }
+    };
+
+    fetchPreviousComments();
+  }, []);
+
   return (
     <div>
       <button
@@ -48,7 +71,7 @@ export const CommentComponent = ({
       >
         <BubbleChat />
 
-        <p className="text-sm">{3}</p>
+        <p className="text-sm">{comments.length}</p>
       </button>
 
       {/* Comment Sidebar */}
@@ -59,7 +82,7 @@ export const CommentComponent = ({
         )}
       >
         <div className="px-6 pt-6 flex items-center justify-between">
-          <p className="font-medium ">Responses (83)</p>
+          <p className="font-medium ">Responses ({comments.length})</p>
 
           <span
             className="cursor-pointer opacity-60 scale-150"
@@ -102,10 +125,14 @@ export const CommentComponent = ({
               <button
                 onClick={handleComment}
                 className="text-sm px-4 py-[6px] bg-[#1a8917] rounded-full text-white"
-              >Respond</button>
+              >
+                Respond
+              </button>
             </div>
           </div>
         </div>
+
+        <PreviousComments storyId={storyId} />
       </div>
     </div>
   );
