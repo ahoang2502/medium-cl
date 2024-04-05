@@ -54,7 +54,7 @@ export const clapCountByUser = async (storyId: string, commentId?: string) => {
         },
       });
 
-      return clap._sum?.clapCount || 0;
+      return JSON.parse(JSON.stringify(clap._sum?.clapCount || 0));
     }
 
     const clap = await db.clap.aggregate({
@@ -68,7 +68,7 @@ export const clapCountByUser = async (storyId: string, commentId?: string) => {
       },
     });
 
-    return clap._sum?.clapCount || 0;
+    return JSON.parse(JSON.stringify(clap._sum?.clapCount || 0));
   } catch (error) {
     console.log("🔴 Error get_clap_count ", error);
 

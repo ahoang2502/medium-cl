@@ -1,8 +1,6 @@
+import { db } from "@/app/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
-
-import { revalidatePath } from "next/cache";
-import { db } from "@/app/prismadb";
 
 export async function POST(req: NextRequest) {
   const { userId } = auth();
@@ -10,9 +8,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { storyId, content } = body;
+    const { storyId, content, parentCommentId } = body;
 
-    if (!storyId || !content) throw new Error("Missing data");
+    if (!storyId || !content || !parentCommentId)
+      throw new Error("Missing data");
 
     const existingStory = await db.story.findUnique({
       where: {
@@ -21,15 +20,14 @@ export async function POST(req: NextRequest) {
     });
     if (!existingStory) throw new Error("Story not found");
 
-    const newComment = await db.comment.create({
+    await db.comment.create({
       data: {
         userId,
         storyId,
         content,
+        parentCommentId,
       },
     });
-
-    revalidatePath(`/published/${existingStory.id}`);
 
     return NextResponse.json("Commented successfully");
   } catch (error) {

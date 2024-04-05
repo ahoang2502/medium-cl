@@ -27,6 +27,11 @@ export const ClapComponent = ({
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
+    setCurrentClapsByUser(userClaps);
+    setCurrentClaps(clapCount)
+  }, [clapCount, userClaps]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setShowPopup(false);
     }, 1000);
@@ -51,8 +56,6 @@ export const ClapComponent = ({
       } else {
         await axios.post("/api/clapcomment", { storyId, commentId });
       }
-
-      toast.success("Success");
     } catch (error) {
       console.log("🔴 Error clap_story_or_comment ", error);
       toast.error("Something went wrong, please try again!");
@@ -75,7 +78,7 @@ export const ClapComponent = ({
         {currentClapsByUser}
       </span>
 
-      {currentClapsByUser > 0 ? <NotClap /> : <Clapped />}
+      {userClaps || currentClapsByUser > 0 ? <NotClap /> : <Clapped />}
 
       <p className="text-sm opacity-60">{currentClaps}</p>
     </button>

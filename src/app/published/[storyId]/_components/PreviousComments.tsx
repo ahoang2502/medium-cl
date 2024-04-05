@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { getAllComments } from "@/actions/comments";
 import { UserBadge } from "./UserBadge";
+import { UserEngagement } from "./UserEngagement";
 
 export interface IPreviousComments extends Comment {
   replies: Comment[];
@@ -53,6 +54,16 @@ export const PreviousComments = ({
             className="m-4 mt-5 py-4 border-b-[1px] border-neutral-100"
           >
             <UserBadge userId={comment.userId} createdAt={comment.createdAt} />
+
+            <p className="py-3 text-neutral-600 text-sm ml-3">
+              {comment.content}
+            </p>
+
+            <UserEngagement
+              storyId={comment.storyId}
+              totalClaps={totalClaps}
+              comment={comment}
+            />
           </div>
         );
       })}
