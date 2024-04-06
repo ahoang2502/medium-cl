@@ -79,12 +79,12 @@ export const CommentComponent = ({
       {/* Comment Sidebar */}
       <div
         className={cn(
-          "h-screen fixed top-0 ring-0 w-[400px] shadow-xl bg-white z-20 duration-200 ease-linear transform overflow-y-scroll ",
+          "h-screen fixed top-0 right-0 ring-0 w-[400px] shadow-xl bg-white z-20 duration-200 ease-linear transform overflow-y-scroll ",
           showSideComp ? "translate-x-0" : "translate-x-[450px]"
         )}
       >
         <div className="px-6 pt-6 flex items-center justify-between">
-          <p className="font-medium ">Responses ({comments.length})</p>
+          <p className="font-medium ">Responses ({numberOfComments})</p>
 
           <span
             className="cursor-pointer opacity-60 scale-150"

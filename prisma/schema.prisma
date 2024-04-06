@@ -54,7 +54,6 @@ model Comment {
 
 model Save {
   id      String @id @default(dbgenerated("concat('save_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  content String
   userId  String
 
   createdAt DateTime @default(now())
