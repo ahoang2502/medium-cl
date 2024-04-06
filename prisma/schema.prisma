@@ -23,9 +23,9 @@ model Story {
 }
 
 model Clap {
-  id     String @id @default(dbgenerated("concat('clap_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  userId String
-  clapCount   Int @default(0)
+  id        String @id @default(dbgenerated("concat('clap_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  userId    String
+  clapCount Int    @default(0)
 
   storyId String
   story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
@@ -53,8 +53,8 @@ model Comment {
 }
 
 model Save {
-  id      String @id @default(dbgenerated("concat('save_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  userId  String
+  id     String @id @default(dbgenerated("concat('save_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  userId String
 
   createdAt DateTime @default(now())
 
