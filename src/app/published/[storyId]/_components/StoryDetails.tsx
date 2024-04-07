@@ -12,6 +12,7 @@ import { getCurrentUser } from "@/actions/user";
 import { numberOfComments } from "@/actions/comments";
 import { isSaved } from "@/actions/save";
 import { FollowComponent } from "./FollowComponent";
+import "highlight.js/styles/github.css";
 
 type Props = {
   authorFirstName: string | null;
@@ -41,6 +42,19 @@ export const StoryDetails = async ({
   const NumberOfComments = await numberOfComments(publishedStory.id);
 
   const savedStatus = await isSaved(publishedStory.id);
+
+  const content = publishedStory.content!;
+
+  const firstH1Match = content.match(/<h1[^>]*>[\s\S]*?<\/h1>/);
+
+  const sanitizedContent = firstH1Match
+    ? content.replace(firstH1Match[0], "")
+    : content;
+
+  const finalSanitizedContent = sanitizedContent.replace(
+    /<h1[^>]*>[\s\S]*?<\/h1>|<select[^>]*>[\s\S]*?<\/select>|<textarea[^>]*>[\s\S]*?<\/textarea>/gi,
+    ""
+  );
 
   return (
     <div className="flex items-center justify-center mt-6 max-w-[800px] mx-auto">
@@ -103,6 +117,11 @@ export const StoryDetails = async ({
             </button>
           </div>
         </div>
+
+        <div
+          className="prose my-5 "
+          dangerouslySetInnerHTML={{ __html: finalSanitizedContent }}
+        />
       </div>
     </div>
   );
