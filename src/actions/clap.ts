@@ -38,7 +38,7 @@ export const getClapCount = async (storyId: string, commentId?: string) => {
 };
 
 export const clapCountByUser = async (storyId: string, commentId?: string) => {
-  const userId = getCurrentUserId();
+  const userId = await getCurrentUserId();
   if (!userId) throw new Error("Missing user ID");
 
   try {

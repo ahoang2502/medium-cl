@@ -11,6 +11,7 @@ import { clapCountByUser, getClapCount } from "@/actions/clap";
 import { getCurrentUser } from "@/actions/user";
 import { numberOfComments } from "@/actions/comments";
 import { isSaved } from "@/actions/save";
+import { FollowComponent } from "./FollowComponent";
 
 type Props = {
   authorFirstName: string | null;
@@ -58,9 +59,7 @@ export const StoryDetails = async ({
           <div className="text-sm">
             <p className="">
               {authorFirstName} {authorLastName}{" "}
-              <span className="font-medium text-[#1a8917] cursor-pointer">
-                · Follow
-              </span>
+              <FollowComponent authorId={publishedStory.authorId} />
             </p>
 
             <p className="opacity-60">
