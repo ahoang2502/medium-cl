@@ -36,7 +36,14 @@ export const SaveComponent = ({ storyId, savedStatus }: Props) => {
   }, [savedStatus]);
 
   return (
-    <button className="flex items-center" onClick={handleSave}>
+    <button
+      className="flex items-center"
+      onClick={(e) => {
+        e.preventDefault();
+        
+        handleSave();
+      }}
+    >
       {currentSaveStatus ? <Saved /> : <NotSave />}
     </button>
   );

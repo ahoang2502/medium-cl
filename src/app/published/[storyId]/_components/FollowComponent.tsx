@@ -46,8 +46,6 @@ export const FollowComponent = ({ authorId }: Props) => {
 
     try {
       await axios.post("/api/following", { authorId });
-
-      toast.success("Followed!");
     } catch (error) {
       toast.error("Could not follow author, please try again.");
       setIsFollowed(!isFollowed);

@@ -34,3 +34,23 @@ export const getPublishedStoryById = async (storyId: string) => {
     return { error: "🔴 Error getting story by Id" };
   }
 };
+
+export const getStoriesByAuthor = async (storyId: string, authorId: string) => {
+  try {
+    const authorStories = await db.story.findMany({
+      where: {
+        authorId,
+        NOT: {
+          id: storyId,
+        },
+        publish: true,
+      },
+    });
+
+    return { response: authorStories };
+  } catch (error) {
+    console.log("🔴 Error getting stories by author ", error);
+
+    return { error: "🔴 Error getting stories by author" };
+  }
+};

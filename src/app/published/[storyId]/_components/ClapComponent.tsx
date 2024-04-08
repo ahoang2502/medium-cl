@@ -28,7 +28,7 @@ export const ClapComponent = ({
 
   useEffect(() => {
     setCurrentClapsByUser(userClaps);
-    setCurrentClaps(clapCount)
+    setCurrentClaps(clapCount);
   }, [clapCount, userClaps]);
 
   useEffect(() => {
@@ -66,7 +66,14 @@ export const ClapComponent = ({
   };
 
   return (
-    <button onClick={clapStoryOrComment} className="flex items-center relative">
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+
+        clapStoryOrComment;
+      }}
+      className="flex items-center relative"
+    >
       <span
         className={cn(
           "absolute, bottom-10, w-[40px] h-[40px] bg-black rounded-full shadow-2xl shadow-neutral-300 text-white flex items-center justify-center duration-75 ease-in",

@@ -9,6 +9,7 @@ import { IPreviousComments } from "./PreviousComments";
 import { BubbleChat } from "@/components/icons/BubbleChat";
 import { RepliedComments } from "./RepliedComments";
 import { CommentArea } from "./CommentArea";
+import { useClapCountsByUser } from "@/hooks/useClapCountsByUser";
 
 type Props = {
   storyId: string;
@@ -20,21 +21,11 @@ export const UserEngagement = ({ storyId, comment, totalClaps }: Props) => {
   const [showCommentArea, setShowCommentArea] = useState<boolean>(false);
   const [showRepliedComments, setShowRepliedComments] =
     useState<boolean>(false);
-  const [userClaps, setUserClaps] = useState<number>(totalClaps);
-
-  useEffect(() => {
-    const fetchClapCountsByUser = async () => {
-      try {
-        const claps = await clapCountByUser(storyId, comment.id);
-
-        setUserClaps(claps);
-      } catch (error) {
-        console.log("Error fetching user claps");
-      }
-    };
-
-    fetchClapCountsByUser();
-  }, [storyId]);
+  const { userClaps } = useClapCountsByUser({
+    commentId: comment.id,
+    storyId,
+    totalClaps,
+  });
 
   return (
     <div>

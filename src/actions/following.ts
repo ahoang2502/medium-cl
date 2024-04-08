@@ -20,3 +20,21 @@ export const isFollowing = async (authorId: string) => {
     return { isFollowing: false };
   }
 };
+
+export const getFollowersCount = async (authorId: string) => {
+  try {
+    const followersCount = await db.following.aggregate({
+      where: {
+        followingId: authorId,
+      },
+      _count: true,
+    });
+
+    return {
+      followersCount: JSON.parse(JSON.stringify(followersCount._count)),
+    };
+  } catch (error) {
+    console.log("🔴 Error getting number of followers: ", error);
+    return { followersCount: 0 };
+  }
+};
