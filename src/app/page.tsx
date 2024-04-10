@@ -1,14 +1,19 @@
 import { Navbar } from "@/components/Navbar";
+import { StoryList } from "./StoryList";
+import { getUniqueTopics } from "@/actions/getStories";
+import { getSelectedTopics } from "@/actions/topics";
 
-export default function Home() {
+export default async function Home() {
+  const allTopics = await getUniqueTopics();
+  const userTags = await getSelectedTopics();
+
   return (
     <main>
       <Navbar />
-      <p className="">hello</p>
-      <p className="font-inria text-normal">helloosnsj </p>
-      <p className="font-sourceSerif font">hello</p>
-      <p className="font-sourceSerifLight">hello</p>
-      <p className="font-inriaBold text-normal">hello</p>
+
+      <div className="max-w-[1100px] mx-auto px-5 mt-12">
+        <StoryList allTopics={allTopics.response} userTags={userTags.tags} />
+      </div>
     </main>
   );
 }
