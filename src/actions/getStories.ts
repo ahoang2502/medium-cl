@@ -9,6 +9,7 @@ export const getStoryById = async (storyId: string) => {
     const storyById = await db.story.findUnique({
       where: {
         id: storyId,
+        publish: false,
       },
     });
 

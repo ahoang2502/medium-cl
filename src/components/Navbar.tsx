@@ -2,16 +2,17 @@
 
 import { UserButton } from "@clerk/nextjs";
 import axios from "axios";
-import { Loader2, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { PiBellThin } from "react-icons/pi";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { VscClose } from "react-icons/vsc";
-
-import { Note } from "./icons/Note";
+import { toast } from "sonner";
 import { useState } from "react";
+
+import { Loader2, Search } from "lucide-react";
+import { VscClose } from "react-icons/vsc";
+import { PiBellThin } from "react-icons/pi";
+import { CiBookmark } from "react-icons/ci";
+import { Note } from "./icons/Note";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -71,6 +72,14 @@ export const Navbar = () => {
               )}
               <p className=" text-sm">Write</p>
             </button>
+
+            <Link
+              href="/me/drafts"
+              className="flex items-center space-x-2 text-sm opacity-70"
+            >
+              <CiBookmark size={22} />
+              Me
+            </Link>
 
             <PiBellThin size={24} />
 
