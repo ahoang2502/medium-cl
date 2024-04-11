@@ -19,6 +19,8 @@ export const Navbar = () => {
   const [storyCreateLoading, setStoryCreateLoading] = useState(false);
   const [isBannerOpen, setIsBannerOpen] = useState(true);
 
+  const [searchInput, setSearchInput] = useState<string>("");
+
   const createNewStory = async () => {
     try {
       setStoryCreateLoading(true);
@@ -32,6 +34,12 @@ export const Navbar = () => {
       toast.error("Couldn't create story. Please try again");
     } finally {
       setStoryCreateLoading(false);
+    }
+  };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      router.push(`/search?for=${searchInput}`);
     }
   };
 
@@ -50,11 +58,17 @@ export const Navbar = () => {
             </Link>
 
             <div className="flex items-center bg-stone-100 rounded-full pl-3 pr-4">
-              <Search size={20} className="opacity-50" />
+              <Search
+                size={20}
+                className="opacity-50"
+                onClick={() => router.push(`/search?for=${searchInput}`)}
+              />
               <input
                 type="text"
                 placeholder="Search"
                 className="focus:outline-none px-2 py-2 placeholder:text-sm text-sm bg-stone-100"
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={handleSearch}
               />
             </div>
           </div>
