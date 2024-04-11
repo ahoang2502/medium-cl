@@ -1,8 +1,9 @@
-import { getStoryById } from "@/actions/getStories";
+import { getPublishedStoryById } from "@/actions/getStories";
 import { NewStory } from "./NewStory";
 
 const StoryIdPage = async ({ params }: { params: { storyId: string } }) => {
-  const data = await getStoryById(params.storyId);
+  const data = await getPublishedStoryById(params.storyId);
+  console.log({data})
 
   return (
     <div className="max-w-[680px] mx-auto -mt-10">

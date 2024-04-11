@@ -15,6 +15,15 @@ type Props = {
   currentUserLastName: string | null;
 };
 
+export const topics = [
+  { value: "Artificial Intelligence", label: "Artificial Intelligence" },
+  { value: "Python", label: "Python" },
+  { value: "Programming", label: "Programming" },
+  { value: "Fashion", label: "Fashion" },
+  { value: "World", label: "World" },
+  { value: "Politics", label: "Politics" },
+];
+
 export const SaveStoryPopup = ({
   storyId,
   publishStory,
@@ -25,15 +34,6 @@ export const SaveStoryPopup = ({
 }: Props) => {
   const [story, setStory] = useState<Story>();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-
-  const topics = [
-    { value: "Artificial Intelligence", label: "Artificial Intelligence" },
-    { value: "Python", label: "Python" },
-    { value: "Programming", label: "Programming" },
-    { value: "Fashion", label: "Fashion" },
-    { value: "World", label: "World" },
-    { value: "Politics", label: "Politics" },
-  ];
 
   useEffect(() => {
     const fetchStoryById = async () => {

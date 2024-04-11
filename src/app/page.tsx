@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/Navbar";
-import { StoryList } from "./StoryList";
+import { StoryList } from "./_components/StoryList";
 import { getUniqueTopics } from "@/actions/getStories";
 import { getSelectedTopics } from "@/actions/topics";
 

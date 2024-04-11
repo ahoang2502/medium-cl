@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Select from "react-select";
 import { toast } from "sonner";
+import { topics } from "../story/[storyId]/_components/SaveStoryPopup";
 
 type Props = {
   allTopics: {
@@ -68,7 +69,7 @@ export const AddTagsComp = ({ allTopics, setShowPopUp, userTags }: Props) => {
             }}
             isOptionDisabled={() => selectedTopics?.length >= 5}
             name="topics"
-            options={allTopics}
+            options={topics}
             className="basic-multi-select"
             classNamePrefix="Add a topic ..."
           />
